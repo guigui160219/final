@@ -11,7 +11,7 @@ export default function Page() {
         <Box
             sx={{
                 minHeight: '100vh',
-                backgroundImage: 'url(/images/binary.jpg)',
+                backgroundColor: '#bdf8f7',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
