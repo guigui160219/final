@@ -10,7 +10,7 @@ export default function AdminPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const ws = new WebSocket("wss://nodered.helhatechniquecharleroi.xyz/ws/tank");
+    const ws = new WebSocket("wss://nodered.helhatechniquecharleroi.xyz/ws/out405");
 
     ws.onopen = () => {
       console.log("WebSocket connecté !");
@@ -61,8 +61,8 @@ export default function AdminPage() {
         gap="20px"
       >
         <Card sx={{ padding: "16px", width: "300px" }}>
-          <Typography variant="h6" gutterBottom>
-            Données WebSocket
+          <Typography variant="h4" gutterBottom>
+            Current
           </Typography>
           {error ? (
             <Typography color="error">{error}</Typography>
@@ -71,8 +71,8 @@ export default function AdminPage() {
           )}
         </Card>
         <Card sx={{ padding: "16px", width: "300px" }}>
-        <Typography variant="h6" gutterBottom>
-            Données WebSocket
+        <Typography variant="h4" gutterBottom>
+            Voltage
           </Typography>
           {error ? (
             <Typography color="error">{error}</Typography>
@@ -81,8 +81,8 @@ export default function AdminPage() {
           )}
         </Card>
         <Card sx={{ padding: "16px", width: "300px" }}>
-        <Typography variant="h6" gutterBottom>
-            Données WebSocket
+        <Typography variant="h4" gutterBottom>
+            Aled
           </Typography>
           {error ? (
             <Typography color="error">{error}</Typography>
