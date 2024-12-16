@@ -40,7 +40,7 @@ function DrawerAppBar() {
   const router = useRouter();
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex" }} marginBottom="50px">
       <AppBar position="absolute" sx={{ backgroundColor: "#001331" }}>
         <Toolbar>
           {/* Titre principal */}

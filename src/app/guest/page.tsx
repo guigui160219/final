@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Box, Card, CardContent, Typography } from "@mui/material";
 import DrawerAppBar from "~/components/nav";
 
 export default function GuestPage() {
@@ -20,7 +20,7 @@ export default function GuestPage() {
           <Card sx={{ minWidth: 275 }}>
           <CardContent>
             <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-              Word of the Day
+              Demander à un admin de vous autorisez l'accès
             </Typography>
           </CardContent>
         </Card>

@@ -1,117 +1,110 @@
 "use client";
 
-import { Box, Checkbox, colors, FormControlLabel, MenuItem, Stack, TextField } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Card, Typography } from "@mui/material";
 import DrawerAppBar from "~/components/nav";
-import { axisClasses } from '@mui/x-charts/ChartsAxis';
-import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer';
-import { LinePlot, MarkPlot } from '@mui/x-charts/LineChart';
-import { BarPlot } from '@mui/x-charts/BarChart';
-import { ChartsXAxis } from '@mui/x-charts/ChartsXAxis';
-import { ChartsYAxis } from '@mui/x-charts/ChartsYAxis';
-import { ChartsGrid } from '@mui/x-charts/ChartsGrid';
-import { ChartsTooltip } from '@mui/x-charts/ChartsTooltip';
-import React from "react";
-
-const dataset = [
-  { min: -12, max: -4, precip: 79, month: 'Jan' },
-  { min: -11, max: -3, precip: 66, month: 'Feb' },
-  { min: -6, max: 2, precip: 76, month: 'Mar' },
-  { min: 1, max: 9, precip: 106, month: 'Apr' },
-  { min: 8, max: 17, precip: 105, month: 'Mai' },
-  { min: 15, max: 24, precip: 114, month: 'Jun' },
-  { min: 18, max: 26, precip: 106, month: 'Jul' },
-  { min: 17, max: 26, precip: 105, month: 'Aug' },
-  { min: 13, max: 21, precip: 100, month: 'Sept' },
-  { min: 6, max: 13, precip: 116, month: 'Oct' },
-  { min: 0, max: 6, precip: 93, month: 'Nov' },
-  { min: -8, max: -1, precip: 93, month: 'Dec' },
-];
-
-const series = [
-  { type: 'line', dataKey: 'min', color: '#577399' },
-  { type: 'line', dataKey: 'max', color: '#fe5f55' },
-  { type: 'bar', dataKey: 'precip', color: '#bfdbf7', yAxisId: 'rightAxis' },
-];
+import { PieChart } from "@mui/x-charts";
 
 export default function AdminPage() {
-    const [reverseX, setReverseX] = React.useState(false);
-    const [reverseLeft, setReverseLeft] = React.useState(false);
-    const [reverseRight, setReverseRight] = React.useState(false);
+  const [data, setData] = useState<string | number | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const ws = new WebSocket("wss://nodered.helhatechniquecharleroi.xyz/ws/tank");
+
+    ws.onopen = () => {
+      console.log("WebSocket connecté !");
+      ws.send("Connexion établie avec succès !");
+    };
+
+    ws.onmessage = (event: MessageEvent) => {
+      console.log("Message reçu :", event.data);
+      setData(event.data);
+    };
+
+    ws.onerror = (event: Event) => {
+      console.error("Erreur WebSocket :", event);
+      setError(`Erreur WebSocket : ${JSON.stringify(event)}`);
+    };
+
+    ws.onclose = (event: CloseEvent) => {
+      console.warn("Connexion WebSocket fermée :", event);
+      setError(`Connexion fermée : Code ${event.code}, Raison : ${event.reason}`);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
+
   return (
     <Box
       sx={{
         minHeight: "100vh",
-        backgroundColor: '#bdf8f7',
+        backgroundColor: "#bdf8f7",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
       <DrawerAppBar />
-      <Stack sx={{ width: '100%' }}>
-      <Stack direction="row">
-        <FormControlLabel
-          checked={reverseX}
-          control={
-            <Checkbox onChange={(event) => setReverseX(event.target.checked)} />
-          }
-          label="reverse x-axis"
-          labelPlacement="end"
-        />
-        <FormControlLabel
-          checked={reverseLeft}
-          control={
-            <Checkbox onChange={(event) => setReverseLeft(event.target.checked)} />
-          }
-          label="reverse left axis"
-          labelPlacement="end"
-        />
-        <FormControlLabel
-          checked={reverseRight}
-          control={
-            <Checkbox onChange={(event) => setReverseRight(event.target.checked)} />
-          }
-          label="reverse right axis"
-          labelPlacement="end"
-        />
-      </Stack>
-      <Box sx={{ width: '100%' }}>
-        <ResponsiveChartContainer
-          series={series}
-          xAxis={[
-            {
-              scaleType: 'band',
-              dataKey: 'month',
-              label: 'Month',
-              reverse: reverseX,
-            },
-          ]}
-          yAxis={[
-            { id: 'leftAxis', reverse: reverseLeft },
-            { id: 'rightAxis', reverse: reverseRight},
-          ]}
-          dataset={dataset}
-          height={400}
-        >
-          <ChartsGrid horizontal />
-          <BarPlot />
-          <LinePlot />
-          <MarkPlot />
-
-          <ChartsXAxis/>
-          <ChartsYAxis axisId="leftAxis" label="temerature (°C)"/>
-          <ChartsYAxis
-            axisId="rightAxis"
-            position="right"
-            label="precipitation (mm)"
-          />
-          <ChartsTooltip />
-        </ResponsiveChartContainer>
+      <Box
+        display="flex"
+        flex="1"
+        padding="16px"
+        borderRadius="30px"
+        justifyContent="space-around"
+        gap="20px"
+      >
+        <Card sx={{ padding: "16px", width: "300px" }}>
+          <Typography variant="h6" gutterBottom>
+            Données WebSocket
+          </Typography>
+          {error ? (
+            <Typography color="error">{error}</Typography>
+          ) : (
+            <Typography>{data || "Aucune donnée reçue"}</Typography>
+          )}
+        </Card>
+        <Card sx={{ padding: "16px", width: "300px" }}>
+        <Typography variant="h6" gutterBottom>
+            Données WebSocket
+          </Typography>
+          {error ? (
+            <Typography color="error">{error}</Typography>
+          ) : (
+            <Typography>{data || "Aucune donnée reçue"}</Typography>
+          )}
+        </Card>
+        <Card sx={{ padding: "16px", width: "300px" }}>
+        <Typography variant="h6" gutterBottom>
+            Données WebSocket
+          </Typography>
+          {error ? (
+            <Typography color="error">{error}</Typography>
+          ) : (
+            <Typography>{data || "Aucune donnée reçue"}</Typography>
+          )}
+        </Card>
       </Box>
-    </Stack>
+      <PieChart
+        colors={["darkslateblue", "blue", "darkblue"]}
+        series={[
+          {
+            data: [
+              { id: 0, value: data, label: "series A" },
+              { id: 1, value: 2, label: "series B" },
+              { id: 2, value: 1, label: "series C" },
+            ],
+          },
+        ]}
+        width={400}
+        height={200}
+      />
     </Box>
   );
 }
