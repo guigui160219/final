@@ -73,3 +73,14 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+model Historique {
+    id        Int      @id @default(autoincrement())
+    voltage     Float
+    current          Float
+    activePower   Float
+    capCarre    Float
+    capRond     Float
+    airConsumed         Float
+    powerFactor     Float
+}
