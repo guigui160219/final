@@ -33,12 +33,16 @@ const navItems: Page[] = [
     route: "/guest",
     isAdmin: false, // Visible pour tout le monde
   },
+  {
+    label: "Historique",
+    route: "/historic",
+    isAdmin: true, // Visible pour tout le monde
+  },
 ];
 
 function DrawerAppBar() {
   const { data: session } = useSession();
   const router = useRouter();
-
   return (
     <Box sx={{ display: "flex" }} marginBottom="50px">
       <AppBar position="absolute" sx={{ backgroundColor: "#001331" }}>
@@ -72,7 +76,7 @@ function DrawerAppBar() {
                 <Button
                   key={item.label}
                   sx={{ color: "#bdf8fd", mx: 1 }}
-                  onClick={() => router.push(item.route)}
+                  onClick={() =>router.push(item.route)}
                 >
                   {item.label}
                 </Button>

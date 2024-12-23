@@ -75,12 +75,11 @@ model VerificationToken {
 }
 
 model Historique {
-    id        Int      @id @default(autoincrement())
-    voltage     Float
-    current          Float
-    activePower   Float
-    capCarre    Float
-    capRond     Float
-    airConsumed         Float
+    id              Int      @id @default(autoincrement())
+    voltage         Float
+    current         Float
+    activePower     Float
+    airConsumed     Float
     powerFactor     Float
+    energyConsumed  Float
 }
